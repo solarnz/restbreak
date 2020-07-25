@@ -1,5 +1,6 @@
 Actions:
-  - ActiveLimitDuration: 60m
+  - Name: 'Hourly Break'
+    ActiveLimitDuration: 60m
     InactiveResetDuration: 5m
     Command: notify-send -u normal -t 30000 "Take a break"
     RefireDuration: 60s

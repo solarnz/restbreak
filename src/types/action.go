@@ -1,8 +1,14 @@
 package types
 
-import "time"
+import (
+	"time"
+
+	"github.com/getlantern/systray"
+)
 
 type Action struct {
+	Name string
+
 	ActiveLimitDuration   time.Duration
 	InactiveResetDuration time.Duration
 	Command               string
@@ -14,4 +20,6 @@ type Action struct {
 	LastInactive time.Time
 	LastActive   time.Time
 	LastFired    time.Time
+
+	SystrayMenuItem *systray.MenuItem
 }

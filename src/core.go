@@ -1,6 +1,7 @@
 package restbreak
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 	"time"
@@ -24,6 +25,11 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
+
+	appTrayIcon := &tray{
+		restbreak,
+	}
+	go appTrayIcon.showTray()
 
 	stopChan := make(chan interface{})
 	eventChan := make(chan types.ActivityEvent)
@@ -75,6 +81,15 @@ func Run() {
 							action.CurrentRefires = 0
 						}
 					}
+				}
+
+				if action.SystrayMenuItem != nil {
+					durationUntilFire := action.LastInactive.Add(action.ActiveLimitDuration).Sub(time.Now())
+					seconds := (durationUntilFire - durationUntilFire.Truncate(time.Minute)).Seconds()
+					action.SystrayMenuItem.SetTitle(
+						action.Name + "\n  Time Left: " +
+							fmt.Sprintf("%02d:%02d", int(durationUntilFire.Minutes()), int(seconds)),
+					)
 				}
 			}
 
